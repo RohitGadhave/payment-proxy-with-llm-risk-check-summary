@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import { validatePaymentRequest, validateTransactionQuery } from '../../src/middleware/validation';
+import { validatePaymentRequest, validateTransactionQuery } from '../../src/middleware/validation.middleware';
 
 describe('Validation Middleware', () => {
   let app: express.Application;

@@ -1,4 +1,4 @@
-import { FraudDetectionService } from '../../src/services/fraud-detector';
+import { FraudDetectionService } from '../../src/services/fraud-detector.service';
 import { FraudAnalysisData } from '../../src/types/fraud';
 
 describe('FraudDetectionService', () => {

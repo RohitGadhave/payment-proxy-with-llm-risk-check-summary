@@ -21,7 +21,7 @@ export class AppError extends Error implements ApiError {
   }
 }
 
-export const errorHandler = (error: Error | ApiError, req: Request, res: Response): void => {
+export const errorHandler = (error: Error | ApiError, req: Request, res: Response, _next: NextFunction): void => {
   let statusCode = 500;
   let message = 'Internal Server Error';
   let isOperational = false;
