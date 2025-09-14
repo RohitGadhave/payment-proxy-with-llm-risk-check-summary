@@ -26,6 +26,7 @@ export class PaymentRoutingService implements PaymentProcessor {
       amount: request.amount,
       currency: request.currency,
       email: request.email,
+      source: request.source,
       domain,
       timestamp: new Date(),
     };

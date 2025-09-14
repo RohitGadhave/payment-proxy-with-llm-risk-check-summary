@@ -17,15 +17,15 @@ export class PaymentController {
       const paymentRequest: PaymentRequest = req.body;
 
       const result = await this.paymentService.processPayment(paymentRequest);
-
+      const isFailed = ['blocked', 'failed'].includes(result.status);
       const response: ApiResponse<PaymentResponse> = {
         success: true,
         data: result,
-        message: 'Payment processed successfully',
+        message: isFailed ? 'Payment not successfully processed' : 'Payment processed successfully',
         timestamp: new Date(),
       };
 
-      res.status(200).json(response);
+      res.status(isFailed ? 400 : 200).json(response);
     } catch (error) {
       throw new AppError('Failed to process payment', 500, true, {
         originalError: error instanceof Error ? error.message : 'Unknown error',

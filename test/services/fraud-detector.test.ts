@@ -14,6 +14,7 @@ describe('FraudDetectionService', () => {
         amount: 100,
         currency: 'USD',
         email: 'user@example.com',
+        source: 'tok_visa',
         domain: 'example.com',
         timestamp: new Date(),
       };
@@ -29,6 +30,7 @@ describe('FraudDetectionService', () => {
         amount: 10000,
         currency: 'USD',
         email: 'user@example.com',
+        source: 'tok_visa',
         domain: 'example.com',
         timestamp: new Date(),
       };
@@ -44,6 +46,7 @@ describe('FraudDetectionService', () => {
         amount: 100,
         currency: 'USD',
         email: 'user@test.ru',
+        source: 'tok_visa',
         domain: 'test.ru',
         timestamp: new Date(),
       };
@@ -59,6 +62,7 @@ describe('FraudDetectionService', () => {
         amount: 100,
         currency: 'USD',
         email: 'user@test.com',
+        source: 'tok_visa',
         domain: 'test.com',
         timestamp: new Date(),
       };
@@ -73,6 +77,7 @@ describe('FraudDetectionService', () => {
         amount: 100,
         currency: 'USD',
         email: '12345@example.com',
+        source: 'tok_visa',
         domain: 'example.com',
         timestamp: new Date(),
       };
@@ -88,6 +93,7 @@ describe('FraudDetectionService', () => {
         currency: 'USD',
         email: '12345@test.ru',
         domain: 'test.ru',
+        source: 'tok_visa',
         timestamp: new Date(),
       };
 

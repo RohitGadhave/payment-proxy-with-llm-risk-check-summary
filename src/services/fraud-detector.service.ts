@@ -6,11 +6,13 @@ import {
   FraudRule,
 } from '../types/fraud';
 import { envConfig } from '../config';
+import { CacheService } from './cache.service';
 const config = envConfig.getConfig();
 export class FraudDetectionService implements FraudDetector {
   private config: FraudConfig;
+  private cache: CacheService = new CacheService();
 
-  constructor() {    
+  constructor() {
     this.config = {
       threshold: config.FRAUD_THRESHOLD,
       largeAmountThreshold: config.LARGE_AMOUNT_THRESHOLD,
@@ -73,7 +75,7 @@ export class FraudDetectionService implements FraudDetector {
       {
         name: 'high_value_currency',
         weight: 0.1,
-        condition: data =>data.amount > 1000,
+        condition: data => data.amount > 1000,
         description: 'High value transaction',
       },
       {
@@ -81,6 +83,18 @@ export class FraudDetectionService implements FraudDetector {
         weight: 0.2,
         condition: data => this.hasSuspiciousEmailPattern(data.email),
         description: 'Email address has suspicious patterns',
+      },
+      {
+        name: 'rapid_fire_transactions',
+        weight: 0.3,
+        condition: (data): boolean => {
+          const cacheKey = this.generateCacheKey(data);
+          const lastAttempt = +(this.cache.get(cacheKey) ?? 0);
+          const now = Date.now();
+          this.cache.set(cacheKey, now.toString());
+          return lastAttempt ? now - lastAttempt < 300000 : false; // Less than 30 seconds since last
+        },
+        description: 'Multiple transactions in a short time frame',
       },
     ];
   }
@@ -97,6 +111,7 @@ export class FraudDetectionService implements FraudDetector {
       /@.*\d{4,}/, // Domain has 4+ consecutive digits
       /[^a-zA-Z0-9@._-]/, // Contains special characters
       /\.{2,}/, // Multiple consecutive dots
+      /@[^@+]+\+[^@]+\./, // Domain contains a plus sign (e.g., one+two@example.com)
     ];
 
     return suspiciousPatterns.some(pattern => pattern.test(email));
@@ -106,5 +121,9 @@ export class FraudDetectionService implements FraudDetector {
     const emailRegex = /^[^\s@]+@([^\s@]+)$/;
     const match = email.match(emailRegex);
     return match?.[1] ?? '';
+  }
+
+  private generateCacheKey(data: FraudAnalysisData): string {
+    return `${data.source}-${data.domain}`;
   }
 }

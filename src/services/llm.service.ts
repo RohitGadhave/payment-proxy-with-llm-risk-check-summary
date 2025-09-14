@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
 import { envConfig } from '../config';
 import { FraudAnalysisData, FraudAnalysisResult } from '../types/fraud';
+import { CacheService } from './cache.service';
 
 export interface LLMService {
   generateExplanation(
@@ -13,7 +14,7 @@ export interface LLMService {
 const config = envConfig.getConfig();
 export class OpenAIService implements LLMService {
   private client: OpenAI;
-  private cache: Map<string, string> = new Map();
+  private cache: CacheService = new CacheService();
 
   constructor() {
     this.client = new OpenAI({
@@ -133,7 +134,7 @@ Generate a natural language explanation for this payment routing decision. Expla
 
   private cleanupCache(): void {
     // Simple cache cleanup - in production, you might want a more sophisticated approach
-    if (this.cache.size > 100) {
+    if (this.cache.size() > 100) {
       const entries = Array.from(this.cache.entries());
       const toDelete = entries.slice(0, 20); // Remove oldest 20 entries
       toDelete.forEach(([key]) => this.cache.delete(key));

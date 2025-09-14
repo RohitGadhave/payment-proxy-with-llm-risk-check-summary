@@ -36,6 +36,7 @@ describe('OpenAIService', () => {
       currency: 'USD',
       email: 'user@example.com',
       domain: 'example.com',
+      source: 'tok_test',
       timestamp: new Date(),
     };
 

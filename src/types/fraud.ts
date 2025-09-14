@@ -11,6 +11,7 @@ export interface FraudAnalysisData {
   email: string;
   domain: string;
   timestamp: Date;
+  source: string;
 }
 
 export interface FraudAnalysisResult {

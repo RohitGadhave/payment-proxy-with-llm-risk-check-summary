@@ -1,5 +1,4 @@
 import { PaymentRoutingService } from '../../src/services/payment-processor.service';
-import { FraudDetectionService } from '../../src/services/fraud-detector.service';
 import { OpenAIService } from '../../src/services/llm.service';
 import { InMemoryTransactionLogger } from '../../src/services/transaction-logger.service';
 import { PaymentRequest } from '../../src/types/payment';
@@ -15,12 +14,10 @@ jest.mock('../../src/services/llm.service', () => {
 
 describe('PaymentRoutingService', () => {
   let paymentService: PaymentRoutingService;
-  let fraudDetector: FraudDetectionService;
   let llmService: OpenAIService;
   let transactionLogger: InMemoryTransactionLogger;
 
   beforeEach(() => {
-    fraudDetector = new FraudDetectionService();
     llmService = new OpenAIService();
     transactionLogger = new InMemoryTransactionLogger();
     paymentService = new PaymentRoutingService(transactionLogger);
