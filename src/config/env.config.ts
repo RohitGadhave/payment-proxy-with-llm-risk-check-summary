@@ -19,6 +19,7 @@ export interface EnvironmentConfig {
   FRAUD_THRESHOLD: number;
   LARGE_AMOUNT_THRESHOLD: number;
   SUSPICIOUS_DOMAINS: string[];
+  RAPID_FIRE_TRANSACTION_LIMIT_TIME: number;
 
   // Logging
   LOG_LEVEL: 'error' | 'warn' | 'info' | 'debug';
@@ -56,6 +57,10 @@ class EnvironmentConfigManager {
         '.test.com',
         '.example.com',
       ]),
+      RAPID_FIRE_TRANSACTION_LIMIT_TIME: this.getEnvVarAsNumber(
+        'RAPID_FIRE_TRANSACTION_LIMIT_TIME',
+        5000
+      ), // Less than 5 seconds since last
 
       // Logging
       LOG_LEVEL: this.getEnvVar('LOG_LEVEL', 'info') as EnvironmentConfig['LOG_LEVEL'],

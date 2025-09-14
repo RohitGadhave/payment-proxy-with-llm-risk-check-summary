@@ -92,7 +92,7 @@ export class FraudDetectionService implements FraudDetector {
           const lastAttempt = +(this.cache.get(cacheKey) ?? 0);
           const now = Date.now();
           this.cache.set(cacheKey, now.toString());
-            return lastAttempt ? now - lastAttempt < 45000 : false; // Less than 45 seconds since last
+            return lastAttempt ? now - lastAttempt < config.RAPID_FIRE_TRANSACTION_LIMIT_TIME : false; 
         },
         description: 'Multiple transactions in a short time frame',
       },
