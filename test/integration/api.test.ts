@@ -30,7 +30,7 @@ describe('API Integration Tests', () => {
         email: 'user@test.ru',
       };
 
-      const response = await request(app).post('/api/charge').send(highRiskRequest).expect(200);
+      const response = await request(app).post('/api/charge').send(highRiskRequest).expect(422);
 
       expect(response.body.success).toBe(true);
       expect(response.body.data.status).toBe('blocked');

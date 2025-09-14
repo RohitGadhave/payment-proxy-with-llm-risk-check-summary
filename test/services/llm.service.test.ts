@@ -95,7 +95,7 @@ describe('OpenAIService', () => {
 
       expect(explanation).toBeDefined();
       expect(typeof explanation).toBe('string');
-      expect(explanation).toContain('low risk score');
+      expect(explanation).toContain('This payment was processed successfully due to low risk factors.');
     });
 
     it('should cache explanations', async () => {
@@ -119,7 +119,7 @@ describe('OpenAIService', () => {
     it('should clear cache', () => {
       llmService.clearCache();
       // Cache should be empty after clearing
-      expect(llmService['cache'].size).toBe(0);
+      expect(llmService['cache'].size()).toBe(0);
     });
   });
 });

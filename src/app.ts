@@ -48,10 +48,10 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(validateContentType);
 
 // Request logging middleware
-app.use((req, _res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - IP: ${req.ip}`);
-  next();
-});
+// app.use((req, _res, next) => {
+//   console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - IP: ${req.ip}`);
+//   next();
+// });
 
 // API routes
 app.use('/api', indexRoutes);

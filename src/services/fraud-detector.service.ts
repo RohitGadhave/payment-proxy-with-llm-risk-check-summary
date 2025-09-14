@@ -34,7 +34,7 @@ export class FraudDetectionService implements FraudDetector {
     }
 
     // Normalize score to 0-1 range
-    const riskScore = Math.min(totalScore, 1);
+    const riskScore = +(Math.min(totalScore, 1).toFixed(2));
     const isHighRisk = riskScore >= this.config.threshold;
     return {
       riskScore,
@@ -92,7 +92,7 @@ export class FraudDetectionService implements FraudDetector {
           const lastAttempt = +(this.cache.get(cacheKey) ?? 0);
           const now = Date.now();
           this.cache.set(cacheKey, now.toString());
-          return lastAttempt ? now - lastAttempt < 300000 : false; // Less than 30 seconds since last
+            return lastAttempt ? now - lastAttempt < 45000 : false; // Less than 45 seconds since last
         },
         description: 'Multiple transactions in a short time frame',
       },

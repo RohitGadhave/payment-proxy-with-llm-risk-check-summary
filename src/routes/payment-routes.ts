@@ -25,8 +25,7 @@ router.get(
   asyncHandler(paymentController.getTransactions)
 );
 
-router.get('/transactions/:id', asyncHandler(paymentController.getTransactionById));
-
 router.get('/transactions/stats', asyncHandler(paymentController.getTransactionStats));
+router.get('/transactions/:id', asyncHandler(paymentController.getTransactionById));
 
 export default router;

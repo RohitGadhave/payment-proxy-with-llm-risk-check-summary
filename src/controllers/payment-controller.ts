@@ -25,7 +25,7 @@ export class PaymentController {
         timestamp: new Date(),
       };
 
-      res.status(isFailed ? 400 : 200).json(response);
+      res.status(isFailed ? 422 : 200).json(response);
     } catch (error) {
       throw new AppError('Failed to process payment', 500, true, {
         originalError: error instanceof Error ? error.message : 'Unknown error',
