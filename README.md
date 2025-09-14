@@ -326,7 +326,7 @@ npm run test:watch
 
 ### Monitoring and Logging
 
-- **Health Check**: `/api/health` endpoint for monitoring
+- **Health Check**: `/api/monitor/health` endpoint for monitoring
 - **Structured Logging**: Winston-based logging with configurable levels
 - **Transaction Logging**: All transactions logged with metadata
 - **Error Tracking**: Comprehensive error handling and reporting

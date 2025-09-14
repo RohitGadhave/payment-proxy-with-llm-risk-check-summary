@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "A lightweight backend API for routing payment requests with fraud detection and LLM integration",
   "main": "dist/index.js",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
