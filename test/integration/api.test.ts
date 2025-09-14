@@ -200,9 +200,9 @@ describe('API Integration Tests', () => {
     });
   });
 
-  describe('GET /api/health', () => {
+  describe('GET /api/monitor/health', () => {
     it('should return health status', async () => {
-      const response = await request(app).get('/api/health').expect(200);
+      const response = await request(app).get('/api/monitor/health').expect(200);
 
       expect(response.body.success).toBe(true);
       expect(response.body.data.status).toBe('healthy');
