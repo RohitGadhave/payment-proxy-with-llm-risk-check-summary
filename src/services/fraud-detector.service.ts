@@ -10,19 +10,12 @@ const config = envConfig.getConfig();
 export class FraudDetectionService implements FraudDetector {
   private config: FraudConfig;
 
-  constructor() {
-    const fraudDetector: Partial<FraudConfig> = {
+  constructor() {    
+    this.config = {
       threshold: config.FRAUD_THRESHOLD,
       largeAmountThreshold: config.LARGE_AMOUNT_THRESHOLD,
       suspiciousDomains: config.SUSPICIOUS_DOMAINS,
-    };
-
-    this.config = {
-      threshold: 0.5,
-      largeAmountThreshold: 5000,
-      suspiciousDomains: ['.ru', '.test.com', '.example.com'],
       rules: this.getDefaultRules(),
-      ...fraudDetector,
     };
   }
 
@@ -80,8 +73,8 @@ export class FraudDetectionService implements FraudDetector {
       {
         name: 'high_value_currency',
         weight: 0.1,
-        condition: data => data.currency === 'USD' && data.amount > 1000,
-        description: 'High value transaction in USD',
+        condition: data =>data.amount > 1000,
+        description: 'High value transaction',
       },
       {
         name: 'suspicious_email_pattern',
