@@ -16,7 +16,7 @@ export class FraudDetectionService implements FraudDetector {
       largeAmountThreshold: config.LARGE_AMOUNT_THRESHOLD,
       suspiciousDomains: config.SUSPICIOUS_DOMAINS,
     };
-    
+
     this.config = {
       threshold: 0.5,
       largeAmountThreshold: 5000,

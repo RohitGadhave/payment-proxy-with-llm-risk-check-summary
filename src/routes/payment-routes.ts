@@ -2,7 +2,6 @@ import { Router } from 'express';
 import { PaymentController } from '../controllers/payment-controller';
 import { PaymentRoutingService } from '../services/payment-processor.service';
 import { InMemoryTransactionLogger } from '../services/transaction-logger.service';
-import { FraudDetectionService } from '../services/fraud-detector.service';
 import {
   validatePaymentRequest,
   validateTransactionQuery,

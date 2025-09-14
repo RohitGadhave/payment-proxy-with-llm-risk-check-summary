@@ -13,9 +13,7 @@ import { InMemoryTransactionLogger } from './transaction-logger.service';
 export class PaymentRoutingService implements PaymentProcessor {
   private llmService: OpenAIService;
   private fraudDetector: FraudDetectionService = new FraudDetectionService();
-  constructor(
-    private transactionLogger: InMemoryTransactionLogger
-  ) {
+  constructor(private transactionLogger: InMemoryTransactionLogger) {
     this.llmService = new OpenAIService();
   }
 
