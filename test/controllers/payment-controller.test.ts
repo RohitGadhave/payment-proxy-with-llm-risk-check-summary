@@ -1,13 +1,11 @@
 import request from 'supertest';
 import express from 'express';
 import { PaymentController } from '../../src/controllers/payment-controller';
-import { PaymentRoutingService } from '../../src/services/payment-processor';
-import { InMemoryTransactionLogger } from '../../src/services/transaction-logger';
-import { FraudDetectionService } from '../../src/services/fraud-detector';
-import { OpenAIService } from '../../src/services/llm-service';
+import { PaymentRoutingService } from '../../src/services/payment-processor.service';
+import { InMemoryTransactionLogger } from '../../src/services/transaction-logger.service';
 
 // Mock the LLM service
-jest.mock('../../src/services/llm-service', () => {
+jest.mock('../../src/services/llm.service', () => {
   return {
     OpenAIService: jest.fn().mockImplementation(() => ({
       generateExplanation: jest.fn().mockResolvedValue('Mock explanation'),
@@ -22,10 +20,8 @@ describe('PaymentController', () => {
   let transactionLogger: InMemoryTransactionLogger;
 
   beforeEach(() => {
-    const fraudDetector = new FraudDetectionService();
-    const llmService = new OpenAIService('test-api-key');
     transactionLogger = new InMemoryTransactionLogger();
-    paymentService = new PaymentRoutingService(fraudDetector, llmService, transactionLogger);
+    paymentService = new PaymentRoutingService(transactionLogger);
     paymentController = new PaymentController(paymentService, transactionLogger);
 
     app = express();

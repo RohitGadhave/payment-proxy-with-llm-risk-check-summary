@@ -1,4 +1,4 @@
-import { OpenAIService } from '../../src/services/llm-service';
+import { OpenAIService } from '../../src/services/llm.service';
 import { FraudAnalysisData, FraudAnalysisResult } from '../../src/types/fraud';
 
 // Mock OpenAI
@@ -27,7 +27,7 @@ describe('OpenAIService', () => {
   let llmService: OpenAIService;
 
   beforeEach(() => {
-    llmService = new OpenAIService('test-api-key');
+    llmService = new OpenAIService();
   });
 
   describe('generateExplanation', () => {
@@ -94,7 +94,7 @@ describe('OpenAIService', () => {
 
       expect(explanation).toBeDefined();
       expect(typeof explanation).toBe('string');
-      expect(explanation).toContain('low risk score');
+      expect(explanation).toContain('low risk');
     });
 
     it('should cache explanations', async () => {

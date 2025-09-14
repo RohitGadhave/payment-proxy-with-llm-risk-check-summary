@@ -130,4 +130,24 @@ export class PaymentController {
       });
     }
   };
+
+  healthCheck = async (_req: Request, res: Response): Promise<void> => {
+    try {
+      const response: ApiResponse<{ status: string; timestamp: Date }> = {
+        success: true,
+        data: {
+          status: 'healthy',
+          timestamp: new Date(),
+        },
+        message: 'Service is healthy',
+        timestamp: new Date(),
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      throw new AppError('Health check failed', 500, true, {
+        originalError: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  };
 }

@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import indexRoutes from './routes/index.routes';
+import paymentRoutes from './routes/payment-routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
 import { validateContentType } from './middleware/validation.middleware';
 import { envConfig } from './config';
@@ -55,6 +56,7 @@ app.use((req, _res, next) => {
 
 // API routes
 app.use('/api', indexRoutes);
+app.use('/api', paymentRoutes);
 
 // Root endpoint
 app.get('/', (_req, res) => {

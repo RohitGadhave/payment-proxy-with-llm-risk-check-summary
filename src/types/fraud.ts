@@ -5,12 +5,25 @@ export interface FraudRule {
   description: string;
 }
 
+export interface TransactionAmountData {
+  amount: number;
+  currency: string;
+  previousAmounts: number[];
+  userAverageAmount: number;
+  userStandardDeviation: number;
+  merchantCategory: string;
+  isFirstTimeTransaction: boolean;
+  creditCardLimit?: number;
+  reportingThreshold: number;
+}
+
 export interface FraudAnalysisData {
   amount: number;
   currency: string;
   email: string;
   domain: string;
   timestamp: Date;
+  transactionAmount?: TransactionAmountData;
 }
 
 export interface FraudAnalysisResult {

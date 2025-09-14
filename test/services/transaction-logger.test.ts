@@ -1,4 +1,4 @@
-import { InMemoryTransactionLogger } from '../../src/services/transaction-logger';
+import { InMemoryTransactionLogger } from '../../src/services/transaction-logger.service';
 import { Transaction } from '../../src/types/transaction';
 
 describe('InMemoryTransactionLogger', () => {

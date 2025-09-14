@@ -29,4 +29,7 @@ router.get('/transactions/:id', asyncHandler(paymentController.getTransactionByI
 
 router.get('/transactions/stats', asyncHandler(paymentController.getTransactionStats));
 
+// Health check route
+router.get('/health', asyncHandler(paymentController.healthCheck));
+
 export default router;
