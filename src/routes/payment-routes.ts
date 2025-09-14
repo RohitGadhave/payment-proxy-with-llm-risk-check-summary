@@ -3,7 +3,10 @@ import { PaymentController } from '../controllers/payment-controller';
 import { PaymentRoutingService } from '../services/payment-processor.service';
 import { InMemoryTransactionLogger } from '../services/transaction-logger.service';
 import { FraudDetectionService } from '../services/fraud-detector.service';
-import { validatePaymentRequest, validateTransactionQuery } from '../middleware/validation.middleware';
+import {
+  validatePaymentRequest,
+  validateTransactionQuery,
+} from '../middleware/validation.middleware';
 import { asyncHandler } from '../middleware/error-handler.middleware';
 import { envConfig } from '../config';
 
@@ -33,6 +36,5 @@ router.get(
 router.get('/transactions/:id', asyncHandler(paymentController.getTransactionById));
 
 router.get('/transactions/stats', asyncHandler(paymentController.getTransactionStats));
-
 
 export default router;

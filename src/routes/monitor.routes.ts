@@ -8,5 +8,4 @@ const router = Router();
 router.get('/health', asyncHandler(monitorController.healthCheck));
 router.get('/ping', asyncHandler(monitorController.ping));
 
-
 export default router;
