@@ -5,17 +5,24 @@ import {
   FraudConfig,
   FraudRule,
 } from '../types/fraud';
-
+import { envConfig } from '../config';
+const config = envConfig.getConfig();
 export class FraudDetectionService implements FraudDetector {
   private config: FraudConfig;
 
-  constructor(config?: Partial<FraudConfig>) {
+  constructor() {
+    const fraudDetector: Partial<FraudConfig> = {
+      threshold: config.FRAUD_THRESHOLD,
+      largeAmountThreshold: config.LARGE_AMOUNT_THRESHOLD,
+      suspiciousDomains: config.SUSPICIOUS_DOMAINS,
+    };
+    
     this.config = {
       threshold: 0.5,
       largeAmountThreshold: 5000,
       suspiciousDomains: ['.ru', '.test.com', '.example.com'],
       rules: this.getDefaultRules(),
-      ...config,
+      ...fraudDetector,
     };
   }
 
@@ -34,7 +41,6 @@ export class FraudDetectionService implements FraudDetector {
     // Normalize score to 0-1 range
     const riskScore = Math.min(totalScore, 1);
     const isHighRisk = riskScore >= this.config.threshold;
-
     return {
       riskScore,
       triggeredRules,

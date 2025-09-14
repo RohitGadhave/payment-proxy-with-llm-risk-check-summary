@@ -8,19 +8,12 @@ import {
   validateTransactionQuery,
 } from '../middleware/validation.middleware';
 import { asyncHandler } from '../middleware/error-handler.middleware';
-import { envConfig } from '../config';
 
 const router = Router();
 
 // Initialize services
-const config = envConfig.getConfig();
-const fraudDetector = new FraudDetectionService({
-  threshold: config.FRAUD_THRESHOLD,
-  largeAmountThreshold: config.LARGE_AMOUNT_THRESHOLD,
-  suspiciousDomains: config.SUSPICIOUS_DOMAINS,
-});
 const transactionLogger = new InMemoryTransactionLogger();
-const paymentService = new PaymentRoutingService(fraudDetector, transactionLogger);
+const paymentService = new PaymentRoutingService(transactionLogger);
 const paymentController = new PaymentController(paymentService, transactionLogger);
 
 // Payment routes

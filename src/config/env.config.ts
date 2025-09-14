@@ -83,7 +83,8 @@ class EnvironmentConfigManager {
       return defaultValue;
     }
 
-    const parsed = parseInt(value, 10);
+    const parsed = value?.includes('.') ? parseFloat(value) : parseInt(value, 10);
+
     if (isNaN(parsed)) {
       throw new Error(`Environment variable ${key} must be a valid number, got: ${value}`);
     }

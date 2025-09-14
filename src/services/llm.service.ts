@@ -60,7 +60,7 @@ export class OpenAIService implements LLMService {
     const prompt = this.buildPrompt(data, result, provider, status);
 
     const response = await this.client.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
