@@ -54,8 +54,8 @@ class EnvironmentConfigManager {
       LARGE_AMOUNT_THRESHOLD: this.getEnvVarAsNumber('LARGE_AMOUNT_THRESHOLD', 5000),
       SUSPICIOUS_DOMAINS: this.getEnvVarAsArray('SUSPICIOUS_DOMAINS', [
         '.ru',
-        '.test.com',
-        '.example.com',
+        'test.com',
+        'example.com',
       ]),
       RAPID_FIRE_TRANSACTION_LIMIT_TIME: this.getEnvVarAsNumber(
         'RAPID_FIRE_TRANSACTION_LIMIT_TIME',

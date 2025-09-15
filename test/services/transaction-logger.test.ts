@@ -8,6 +8,9 @@ describe('InMemoryTransactionLogger', () => {
     logger = new InMemoryTransactionLogger();
   });
 
+  // -------------------------
+  // Add and get transaction
+  // -------------------------
   describe('addTransaction and getTransaction', () => {
     it('should add and retrieve transaction', () => {
       const transaction: Transaction = {
@@ -35,6 +38,9 @@ describe('InMemoryTransactionLogger', () => {
     });
   });
 
+  // -------------------------
+  // Get all transactions
+  // -------------------------
   describe('getAllTransactions', () => {
     it('should return all transactions', () => {
       const transaction1 = logger.createTransaction({
@@ -69,6 +75,9 @@ describe('InMemoryTransactionLogger', () => {
     });
   });
 
+  // -------------------------
+  // Get transactions by email
+  // -------------------------
   describe('getTransactionsByEmail', () => {
     it('should filter transactions by email', () => {
       const transaction1 = logger.createTransaction({
@@ -114,12 +123,35 @@ describe('InMemoryTransactionLogger', () => {
       });
 
       logger.addTransaction(transaction);
-
       const filtered = logger.getTransactionsByEmail('test@example.com');
       expect(filtered).toHaveLength(1);
     });
+
+    it('should return empty array for unknown email', () => {
+      const results = logger.getTransactionsByEmail('unknown@example.com');
+      expect(results).toHaveLength(0);
+    });
+
+    it('should return all transactions if email is empty string', () => {
+      const transaction = logger.createTransaction({
+        amount: 10,
+        currency: 'USD',
+        email: '',
+        source: 'tok_test',
+        provider: 'stripe',
+        status: 'success',
+        riskScore: 0,
+        explanation: 'Empty email',
+      });
+      logger.addTransaction(transaction);
+      const results = logger.getTransactionsByEmail('');
+      expect(results).toHaveLength(1);
+    });
   });
 
+  // -------------------------
+  // Get transactions by status
+  // -------------------------
   describe('getTransactionsByStatus', () => {
     it('should filter transactions by status', () => {
       const transaction1 = logger.createTransaction({
@@ -157,6 +189,9 @@ describe('InMemoryTransactionLogger', () => {
     });
   });
 
+  // -------------------------
+  // Get transactions by date range
+  // -------------------------
   describe('getTransactionsByDateRange', () => {
     it('should filter transactions by date range', () => {
       const now = new Date();
@@ -173,8 +208,6 @@ describe('InMemoryTransactionLogger', () => {
         riskScore: 0.2,
         explanation: 'Test 1',
       });
-
-      // Manually set timestamp to yesterday
       transaction1.timestamp = yesterday;
 
       const transaction2 = logger.createTransaction({
@@ -194,11 +227,27 @@ describe('InMemoryTransactionLogger', () => {
       const filtered = logger.getTransactionsByDateRange(yesterday, tomorrow);
       expect(filtered).toHaveLength(2);
     });
+
+    it('should return empty array if no transactions in range', () => {
+      const start = new Date('2000-01-01');
+      const end = new Date('2000-01-02');
+      const results = logger.getTransactionsByDateRange(start, end);
+      expect(results).toHaveLength(0);
+    });
+
+    it('should return empty array if startDate > endDate', () => {
+      const start = new Date('2025-01-02');
+      const end = new Date('2025-01-01');
+      const results = logger.getTransactionsByDateRange(start, end);
+      expect(results).toHaveLength(0);
+    });
   });
 
+  // -------------------------
+  // Query transactions
+  // -------------------------
   describe('queryTransactions', () => {
     beforeEach(() => {
-      // Add test transactions
       const transactions = [
         {
           amount: 100,
@@ -261,14 +310,37 @@ describe('InMemoryTransactionLogger', () => {
     });
 
     it('should sort by amount ascending', () => {
-      const results = logger.queryTransactions({
-        sortBy: 'amount',
-        sortOrder: 'asc',
-      });
+      const results = logger.queryTransactions({ sortBy: 'amount', sortOrder: 'asc' });
       expect(results[0]?.amount).toBeLessThanOrEqual(results[1]?.amount ?? 0);
+    });
+
+    it('should sort by riskScore descending', () => {
+      const results = logger.queryTransactions({ sortBy: 'riskScore', sortOrder: 'desc' });
+      expect(results[0].riskScore).toBeGreaterThanOrEqual(results[1].riskScore);
+    });
+
+    it('should sort by email ascending', () => {
+      const results = logger.queryTransactions({ sortBy: 'email', sortOrder: 'asc' });
+      expect(results[0].email <= results[1].email).toBe(true);
+    });
+
+    it('should filter by startDate and endDate', () => {
+      const now = new Date();
+      const start = new Date(now.getTime() - 1000);
+      const end = new Date(now.getTime() + 1000);
+      const results = logger.queryTransactions({ startDate: start, endDate: end });
+      expect(results.length).toBeGreaterThan(0);
+    });
+
+    it('should return empty array if no matches', () => {
+      const results = logger.queryTransactions({ email: 'nomatch@example.com' });
+      expect(results).toHaveLength(0);
     });
   });
 
+  // -------------------------
+  // getTransactionStats
+  // -------------------------
   describe('getTransactionStats', () => {
     it('should return correct statistics', () => {
       const transactions = [
@@ -309,8 +381,20 @@ describe('InMemoryTransactionLogger', () => {
       expect(stats.totalAmount).toBe(300);
       expect(stats.averageAmount).toBe(150);
     });
+
+    it('should return zeros when no transactions', () => {
+      const stats = logger.getTransactionStats();
+      expect(stats.total).toBe(0);
+      expect(stats.totalAmount).toBe(0);
+      expect(stats.averageAmount).toBe(0);
+      expect(stats.byStatus).toEqual({});
+      expect(stats.byProvider).toEqual({});
+    });
   });
 
+  // -------------------------
+  // clearTransactions
+  // -------------------------
   describe('clearTransactions', () => {
     it('should clear all transactions', () => {
       const transaction = logger.createTransaction({
@@ -329,6 +413,30 @@ describe('InMemoryTransactionLogger', () => {
 
       logger.clearTransactions();
       expect(logger.getAllTransactions()).toHaveLength(0);
+    });
+  });
+
+  // -------------------------
+  // createTransaction
+  // -------------------------
+  describe('createTransaction', () => {
+    it('should create transaction with id and timestamp', () => {
+      const data = {
+        amount: 50,
+        currency: 'USD',
+        email: 'user@example.com',
+        source: 'tok_123',
+        provider: 'stripe',
+        status: 'success',
+        riskScore: 0.1,
+        explanation: 'Test creation',
+        metadata: { key: 'value' },
+      };
+
+      const tx = logger.createTransaction(data);
+      expect(tx.id).toBeDefined();
+      expect(tx.timestamp).toBeInstanceOf(Date);
+      expect(tx.metadata).toEqual({ key: 'value' });
     });
   });
 });
