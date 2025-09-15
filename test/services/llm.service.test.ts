@@ -95,7 +95,9 @@ describe('OpenAIService', () => {
 
       expect(explanation).toBeDefined();
       expect(typeof explanation).toBe('string');
-      expect(explanation).toContain('This payment was processed successfully due to low risk factors.');
+      expect(explanation).toContain(
+        'This payment was processed successfully due to low risk factors.'
+      );
     });
 
     it('should cache explanations', async () => {

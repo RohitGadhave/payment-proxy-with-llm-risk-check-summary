@@ -14,11 +14,9 @@ jest.mock('../../src/services/llm.service', () => {
 
 describe('PaymentRoutingService', () => {
   let paymentService: PaymentRoutingService;
-  let llmService: OpenAIService;
   let transactionLogger: InMemoryTransactionLogger;
 
   beforeEach(() => {
-    llmService = new OpenAIService();
     transactionLogger = new InMemoryTransactionLogger();
     paymentService = new PaymentRoutingService(transactionLogger);
   });
@@ -97,7 +95,9 @@ describe('PaymentRoutingService', () => {
     });
 
     it('should generate explanation using LLM service', async () => {
-      const generateExplanationSpy = jest.spyOn(llmService, 'generateExplanation');
+      // Get the mock instance of OpenAIService created inside PaymentRoutingService
+      const mockInstance = (OpenAIService as jest.Mock).mock.results[0].value;
+      const generateExplanationSpy = mockInstance.generateExplanation;
 
       await paymentService.processPayment(validRequest);
 
@@ -128,7 +128,6 @@ describe('PaymentRoutingService', () => {
       const result = await paymentService.processPayment(eurRequest);
 
       expect(result).toBeDefined();
-      expect(result).toBeDefined();
     });
 
     it('should extract domain from email correctly', async () => {
@@ -142,7 +141,6 @@ describe('PaymentRoutingService', () => {
       const result = await paymentService.processPayment(requestWithDomain);
 
       expect(result).toBeDefined();
-      // The domain extraction should work correctly
       const loggedTransaction = transactionLogger.getTransaction(result.transactionId);
       expect(loggedTransaction).toBeDefined();
     });
@@ -157,8 +155,9 @@ describe('PaymentRoutingService', () => {
         email: 'user@example.com',
       };
 
-      // Mock LLM service to throw an error
-      jest.spyOn(llmService, 'generateExplanation').mockRejectedValue(new Error('LLM Error'));
+      // Get the mock instance of OpenAIService created inside PaymentRoutingService
+      const mockInstance = (OpenAIService as jest.Mock).mock.results[0].value;
+      (mockInstance.generateExplanation as jest.Mock).mockRejectedValueOnce(new Error('LLM Error'));
 
       const result = await paymentService.processPayment(validRequest);
 
