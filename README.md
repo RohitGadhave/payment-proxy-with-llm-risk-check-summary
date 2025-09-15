@@ -154,6 +154,7 @@ http://localhost:3000/api
 | GET | `/transactions/:id` | Get specific transaction by ID |
 | GET | `/transactions/stats` | Get transaction statistics |
 | GET | `/health` | Health check endpoint |
+| GET | `/ping` | Ping endpoint |
 
 ### Example Usage
 
@@ -176,7 +177,7 @@ curl -X POST http://localhost:3000/api/charge \
 curl "http://localhost:3000/api/transactions?status=success&page=1&limit=10"
 ```
 
-For complete API documentation, see [docs/API.md](docs/API.md).
+For complete API documentation, see [docs/payment.API.md](docs/payment.API.md).
 
 ## 🧠 Fraud Detection Logic
 
@@ -382,7 +383,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For questions, issues, or contributions:
 
-1. Check the [API Documentation](docs/API.md)
+1. Check the [API Documentation](docs/payment.API.md)
 2. Review existing [Issues](../../issues)
 3. Create a new issue with detailed information
 4. Contact the development team

@@ -7,7 +7,7 @@ The Payment Routing API is a lightweight backend service that simulates routing 
 ## Base URL
 
 ```
-http://localhost:3000/api/payment
+http://localhost:3000/api
 ```
 
 ## Authentication
@@ -281,6 +281,26 @@ Check the health status of the API.
     }
   },
   "message": "Service is healthy",
+  "timestamp": "2023-12-01T10:30:00.000Z"
+}
+```
+
+### 6. Ping
+
+**GET** `/ping`
+
+A simple endpoint to check if the service is alive.
+
+#### Response
+
+**Success (200 OK)**
+```json
+{
+  "success": true,
+  "data": {
+    "message": "pong"
+  },
+  "message": "Service is reachable",
   "timestamp": "2023-12-01T10:30:00.000Z"
 }
 ```
