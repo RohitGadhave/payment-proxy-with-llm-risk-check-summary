@@ -47,6 +47,7 @@ NODE_ENV=development
 
 # OpenAI Configuration
 OPENAI_API_KEY=your_openai_api_key_here
+AI_MODEL=gpt-4o-mini
 
 # Rate Limiting
 RATE_LIMIT_WINDOW_MS=900000
@@ -56,6 +57,7 @@ RATE_LIMIT_MAX_REQUESTS=100
 FRAUD_THRESHOLD=0.5
 LARGE_AMOUNT_THRESHOLD=5000
 SUSPICIOUS_DOMAINS=.ru,.test.com,.example.com
+RAPID_FIRE_TRANSACTION_LIMIT_TIME=50000
 
 # Logging
 LOG_LEVEL=info
@@ -101,6 +103,9 @@ npm run format
 
 # Type checking
 npm run type-check
+
+# Run all checks (type-check, lint, test, build)
+npm run ci:check
 ```
 
 ## 🐳 Docker Deployment
@@ -221,12 +226,13 @@ The API uses OpenAI's GPT-3.5-turbo to generate human-readable explanations for 
 
 ```
 src/
+├── config/          # Environment configuration
 ├── types/           # TypeScript interfaces and types
 ├── services/        # Business logic services
-│   ├── fraud-detector.ts
-│   ├── llm-service.ts
-│   ├── payment-processor.ts
-│   └── transaction-logger.ts
+│   ├── fraud-detector.service.ts
+│   ├── llm.service.ts
+│   ├── payment-processor.service.ts
+│   └── transaction-logger.service.ts
 ├── controllers/     # API controllers
 ├── middleware/      # Express middleware
 ├── routes/          # API routes
@@ -259,11 +265,13 @@ test/
 | `PORT` | Server port | 3000 | No |
 | `NODE_ENV` | Environment | development | No |
 | `OPENAI_API_KEY` | OpenAI API key | - | Yes |
+| `AI_MODEL` | The model to use for generating explanations | `gpt-4o-mini` | No |
 | `RATE_LIMIT_WINDOW_MS` | Rate limit window | 900000 | No |
 | `RATE_LIMIT_MAX_REQUESTS` | Max requests per window | 100 | No |
 | `FRAUD_THRESHOLD` | Fraud blocking threshold | 0.5 | No |
 | `LARGE_AMOUNT_THRESHOLD` | Large amount threshold | 5000 | No |
 | `SUSPICIOUS_DOMAINS` | Comma-separated suspicious domains | .ru,.test.com,.example.com | No |
+| `RAPID_FIRE_TRANSACTION_LIMIT_TIME` | Time limit for rapid-fire transactions in milliseconds | 60000 | No |
 | `LOG_LEVEL` | Logging level | info | No |
 
 ### Fraud Rules Configuration

@@ -10,6 +10,7 @@ export interface EnvironmentConfig {
 
   // OpenAI Configuration
   OPENAI_API_KEY: string;
+  AI_MODEL: string;
 
   // Rate Limiting
   RATE_LIMIT_WINDOW_MS: number;
@@ -44,6 +45,7 @@ class EnvironmentConfigManager {
 
       // OpenAI Configuration
       OPENAI_API_KEY: this.getRequiredEnvVar('OPENAI_API_KEY'),
+      AI_MODEL: this.getEnvVar('AI_MODEL', 'gpt-4o-mini'),
 
       // Rate Limiting
       RATE_LIMIT_WINDOW_MS: this.getEnvVarAsNumber('RATE_LIMIT_WINDOW_MS', 900000), // 15 minutes
