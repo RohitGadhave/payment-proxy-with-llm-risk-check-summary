@@ -64,11 +64,12 @@ app.get('/', (_req, res) => {
     version: '1.0.0',
     timestamp: new Date(),
     endpoints: {
-      'POST /api/paymentcharge': 'Process a payment with fraud detection',
-      'GET /api/paymentcharge/transactions': 'Get all transactions with optional filtering',
-      'GET /api/paymentcharge/transactions/:id': 'Get a specific transaction by ID',
-      'GET /api/paymentcharge/transactions/stats': 'Get transaction statistics',
+      'POST /api': 'Process a payment with fraud detection',
+      'GET /api/transactions': 'Get all transactions with optional filtering',
+      'GET /api/transactions/:id': 'Get a specific transaction by ID',
+      'GET /api/transactions/stats': 'Get transaction statistics',
       'GET /api/monitor/health': 'Health check endpoint',
+      'GET /api/monitor/ping': 'ping server',
     },
   });
 });

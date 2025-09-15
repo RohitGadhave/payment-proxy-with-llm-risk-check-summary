@@ -17,7 +17,7 @@ RUN npm ci
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN npm run ci:check
 
 # Remove dev dependencies and source code
 RUN npm prune --production && \
